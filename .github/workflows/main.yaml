@@ -20,7 +20,7 @@ jobs:
     if: github.ref == 'refs/heads/release'
     needs: release-test
     uses: ./.github/workflows/build.yaml
-
+  #
   # release-deploy:
   #   if: github.ref == 'refs/heads/release' && success()
   #   needs: release-build
@@ -30,6 +30,7 @@ jobs:
 
   main-test:
     if: github.ref == 'refs/heads/main'
+    needs: release-build
     uses: ./.github/workflows/test.yaml
 
   main-build:
