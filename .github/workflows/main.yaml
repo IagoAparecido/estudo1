@@ -5,19 +5,19 @@ on:
     branches:
       - main
       - develop
-      - realise
+      - release
 
 jobs:
   develop:
     if: github.ref == 'refs/heads/develop'
     uses: ./.github/workflows/test.yaml
 
-  realise-test:
-    if: github.ref == 'refs/heads/realise'
+  release-test:
+    if: github.ref == 'refs/heads/release'
     uses: ./.github/workflows/test.yaml
 
-  realese-build:
-    if: github.ref == 'refs/heads/realese'
+  release-build:
+    if: github.ref == 'refs/heads/release'
     needs: realise-test
     uses: ./.github/workflows/build.yaml
 
