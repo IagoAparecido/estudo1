@@ -7,6 +7,10 @@ on:
       - release
     workflow_dispatch:
 
+  pull_request:
+    branches:
+      - main
+
 jobs:
   develop:
     if: github.ref == 'refs/heads/develop'
@@ -23,11 +27,11 @@ jobs:
 
   release-deploy:
     needs: release-build
-    environment: main
+    environment: release
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy para o ambiente de homologação
-        run: echo "Deploy realizado com sucesso para o ambiente de homologação!"
+      - name: Deploy para o ambiente de release
+        run: echo "Deploy realizado com sucesso para o ambiente de release!"
 
   notify-release:
     needs: [release-build]
@@ -47,7 +51,6 @@ jobs:
 
   main-test:
     if: github.ref == 'refs/heads/main'
-    needs: release-build
     uses: ./.github/workflows/test.yaml
 
   main-build:
