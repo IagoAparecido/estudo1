@@ -20,6 +20,7 @@ jobs:
     if: github.ref == 'refs/heads/release'
     needs: release-test
     uses: ./.github/workflows/build.yaml
+    environment: main
 
   # release-deploy:
   #   if: github.ref == 'refs/heads/release' && success()
