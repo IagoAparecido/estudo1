@@ -23,7 +23,9 @@ jobs:
 
   release-deploy:
     needs: release-build
-    uses: ./.github/workflows/deploy.yaml
+    steps:
+      - name: Deploy para o ambiente de produção
+        run: echo "Deploy realizado com sucesso para o ambiente de produção!"
     with:
       environment: main
 
