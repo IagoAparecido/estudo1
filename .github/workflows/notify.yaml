@@ -1,0 +1,11 @@
+name: Notificação
+
+on: [workflow_call]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Enviar Notificação
+        run: echo "Notificação: O pipeline foi concluído com sucesso!"

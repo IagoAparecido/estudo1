@@ -1,0 +1,61 @@
+name: Pipeline CI/CD - ACME
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - realise
+
+jobs:
+  develop:
+    if: github.ref == 'refs/heads/develop'
+    uses: ./.github/workflows/test.yaml
+
+  realise-test:
+    if: github.ref == 'refs/heads/realise'
+    uses: ./.github/workflows/test.yaml
+
+  realise-build:
+    if: github.ref == 'refs/heads/realise'
+    needs: realise-test
+    uses: ./.github/workflows/build.yaml
+
+  # realise-deploy:
+  #   if: github.ref == 'refs/heads/realise' && success()
+  #   needs: realise-build
+  #   uses: ./.github/workflows/deploy.yaml
+  #   with:
+  #     environment: realise
+
+  main-test:
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/test.yaml
+
+  main-build:
+    if: github.ref == 'refs/heads/main'
+    needs: main-test
+    uses: ./.github/workflows/build.yaml
+
+  # main-deploy:
+  #   if: github.ref == 'refs/heads/main' && success()
+  #   needs: main-build
+  #   uses: ./.github/workflows/deploy.yaml
+  #   with:
+  #     environment: production
+
+  notify:
+    needs: [main-build, release-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notificar Sucesso
+        if: success()
+        run: echo "Deploy realizado com sucesso para o ambiente ${{ github.ref }}!"
+
+      - name: Notificar Falha
+        if: failure()
+        run: echo "Deploy falhou para o ambiente ${{ github.ref }}!"
+
+      - name: Sempre Notificar
+        if: always()
+        run: echo "Pipeline finalizado para o ambiente ${{ github.ref }}."

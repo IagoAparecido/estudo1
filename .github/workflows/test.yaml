@@ -1,0 +1,17 @@
+name: Teste ACME
+
+on: [workflow_call]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Rodar testes unitários
+        run: npm run test
+
+      - name: Rodar testes e2e
+        run: npm run test:e2e
