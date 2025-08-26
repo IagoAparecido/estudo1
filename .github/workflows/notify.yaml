@@ -8,4 +8,4 @@ jobs:
 
     steps:
       - name: Enviar Notificação
-        run: echo "Notificação: O pipeline foi concluído com sucesso!"
+        run: echo "O pipeline foi concluído com sucesso!"
