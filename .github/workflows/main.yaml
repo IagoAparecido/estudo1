@@ -16,8 +16,8 @@ jobs:
     if: github.ref == 'refs/heads/realise'
     uses: ./.github/workflows/test.yaml
 
-  realise-build:
-    if: github.ref == 'refs/heads/realise'
+  realese-build:
+    if: github.ref == 'refs/heads/realese'
     needs: realise-test
     uses: ./.github/workflows/build.yaml
 
