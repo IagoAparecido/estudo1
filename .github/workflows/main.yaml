@@ -23,8 +23,6 @@ jobs:
 
   release-deploy:
     needs: release-build
-    runs-on: ubuntu-latest
-    environment: main
     steps:
       - name: Deploy para o ambiente de produção
         run: echo "Deploy realizado com sucesso para o ambiente de produção!"
@@ -55,12 +53,12 @@ jobs:
     needs: main-test
     uses: ./.github/workflows/build.yaml
 
-  # main-deploy:
-  #   if: github.ref == 'refs/heads/main' && success()
-  #   needs: main-build
-  #   uses: ./.github/workflows/deploy.yaml
-  #   with:
-  #     environment: production
+  main-deploy:
+    needs: release-build
+    environment: main
+    steps:
+      - name: Deploy para o ambiente de produção
+        run: echo "Deploy realizado com sucesso para o ambiente de produção!"
 
   notify-main:
     needs: [main-build]
