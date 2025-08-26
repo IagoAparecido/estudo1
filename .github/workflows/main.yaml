@@ -23,11 +23,11 @@ jobs:
 
   release-deploy:
     needs: release-build
+    runs-on: ubuntu-latest
+    environment: main
     steps:
       - name: Deploy para o ambiente de produção
         run: echo "Deploy realizado com sucesso para o ambiente de produção!"
-    with:
-      environment: main
 
   notify-release:
     needs: [release-build]
