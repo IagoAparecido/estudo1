@@ -5,7 +5,7 @@ on:
     branches:
       - develop
       - release
-    workflow_dispatch
+    workflow_dispatch:
 
 jobs:
   develop:
@@ -44,7 +44,6 @@ jobs:
       if: always()
       run: echo "Pipeline finalizado para o ambiente ${{ github.ref }}."
 
-
   main-test:
     if: github.ref == 'refs/heads/main'
     needs: release-build
@@ -61,7 +60,6 @@ jobs:
   #   uses: ./.github/workflows/deploy.yaml
   #   with:
   #     environment: production
-
 
   notify-main:
     needs: [main-build]
