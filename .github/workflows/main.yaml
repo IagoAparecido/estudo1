@@ -3,9 +3,9 @@ name: Pipeline CI/CD - ACME
 on:
   push:
     branches:
-      - main
       - develop
       - release
+    workflow_dispatch
 
 jobs:
   develop:
@@ -28,6 +28,23 @@ jobs:
   #   with:
   #     environment: release
 
+  notify-release:
+  needs: [release-build]
+  runs-on: ubuntu-latest
+  steps:
+    - name: Notificar Sucesso
+      if: success()
+      run: echo "Deploy realizado com sucesso para o ambiente ${{ github.ref }}!"
+
+    - name: Notificar Falha
+      if: failure()
+      run: echo "Deploy falhou para o ambiente ${{ github.ref }}!"
+
+    - name: Sempre Notificar
+      if: always()
+      run: echo "Pipeline finalizado para o ambiente ${{ github.ref }}."
+
+
   main-test:
     if: github.ref == 'refs/heads/main'
     needs: release-build
@@ -45,8 +62,9 @@ jobs:
   #   with:
   #     environment: production
 
-  notify:
-    needs: [main-build, release-build]
+
+  notify-main:
+    needs: [main-build]
     runs-on: ubuntu-latest
     steps:
       - name: Notificar Sucesso
