@@ -18,15 +18,15 @@ jobs:
 
   release-build:
     if: github.ref == 'refs/heads/release'
-    needs: realise-test
+    needs: release-test
     uses: ./.github/workflows/build.yaml
 
-  # realise-deploy:
-  #   if: github.ref == 'refs/heads/realise' && success()
-  #   needs: realise-build
+  # release-deploy:
+  #   if: github.ref == 'refs/heads/release' && success()
+  #   needs: release-build
   #   uses: ./.github/workflows/deploy.yaml
   #   with:
-  #     environment: realise
+  #     environment: release
 
   main-test:
     if: github.ref == 'refs/heads/main'
