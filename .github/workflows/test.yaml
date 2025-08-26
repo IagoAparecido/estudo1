@@ -10,6 +10,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Instalar dependencias
+        run: npm install
+
       - name: Rodar testes unitários
         run: npm run test
 
