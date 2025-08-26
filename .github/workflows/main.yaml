@@ -23,9 +23,11 @@ jobs:
 
   release-deploy:
     needs: release-build
+    environment: main
+    runs-on: ubuntu-latest
     steps:
-      - name: Deploy para o ambiente de produção
-        run: echo "Deploy realizado com sucesso para o ambiente de produção!"
+      - name: Deploy para o ambiente de homologação
+        run: echo "Deploy realizado com sucesso para o ambiente de homologação!"
 
   notify-release:
     needs: [release-build]
@@ -54,8 +56,9 @@ jobs:
     uses: ./.github/workflows/build.yaml
 
   main-deploy:
-    needs: release-build
+    needs: main-build
     environment: main
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy para o ambiente de produção
         run: echo "Deploy realizado com sucesso para o ambiente de produção!"
