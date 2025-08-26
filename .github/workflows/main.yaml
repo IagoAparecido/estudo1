@@ -3,9 +3,13 @@ name: Pipeline CI/CD - ACME
 on:
   push:
     branches:
-      - main
       - develop
       - release
+    workflow_dispatch:
+
+  pull_request:
+    branches:
+      - main
 
 jobs:
   develop:
@@ -20,17 +24,33 @@ jobs:
     if: github.ref == 'refs/heads/release'
     needs: release-test
     uses: ./.github/workflows/build.yaml
-  #
-  # release-deploy:
-  #   if: github.ref == 'refs/heads/release' && success()
-  #   needs: release-build
-  #   uses: ./.github/workflows/deploy.yaml
-  #   with:
-  #     environment: release
+
+  release-deploy:
+    needs: release-build
+    environment: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy para o ambiente de release
+        run: echo "Deploy realizado com sucesso para o ambiente de release!"
+
+  notify-release:
+    needs: [release-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notificar Sucesso
+        if: success()
+        run: echo "Deploy realizado com sucesso para o ambiente ${{ github.ref }}!"
+
+      - name: Notificar Falha
+        if: failure()
+        run: echo "Deploy falhou para o ambiente ${{ github.ref }}!"
+
+      - name: Sempre Notificar
+        if: always()
+        run: echo "Pipeline finalizado para o ambiente ${{ github.ref }}."
 
   main-test:
     if: github.ref == 'refs/heads/main'
-    needs: release-build
     uses: ./.github/workflows/test.yaml
 
   main-build:
@@ -38,15 +58,16 @@ jobs:
     needs: main-test
     uses: ./.github/workflows/build.yaml
 
-  # main-deploy:
-  #   if: github.ref == 'refs/heads/main' && success()
-  #   needs: main-build
-  #   uses: ./.github/workflows/deploy.yaml
-  #   with:
-  #     environment: production
+  main-deploy:
+    needs: main-build
+    environment: main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy para o ambiente de produção
+        run: echo "Deploy realizado com sucesso para o ambiente de produção!"
 
-  notify:
-    needs: [main-build, release-build]
+  notify-main:
+    needs: [main-build]
     runs-on: ubuntu-latest
     steps:
       - name: Notificar Sucesso
